@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Loja de Instrumentos Musicais</title>
+    <script type="text/javascript" src="js-av2.js"></script>
+    <link rel="stylesheet" href="estilo-loja.css">
+</head>
+<body>
+
+    <!-- Login -->
+    <section id="login">
+        <h2>Acesso ao controle de estoque da loja</h2>
+        <input type="email" id="email" placeholder="E-mail">
+        <input type="password" id="senha" placeholder="Senha">
+        <button onclick="entrar()">Entrar</button>
+        <button onclick="finalizarSessao()">Encerrar</button>
+        <p class="mensagem" id="msgLogin"></p>
+    </section>
+
+    <!-- Menu -->
+    <section id="menu">
+        <h2>Painel de Controle</h2>
+        <label for="escolha">Digite o número da opção desejada:</label>
+        <div id="descricaoMenu">
+            <p><strong>1:</strong> Cadastrar um novo instrumento na loja</p>
+            <p><strong>2:</strong> Adicionar unidades ao estoque</p>
+            <p><strong>3:</strong> Retirar unidades do estoque</p>
+            <p><strong>4:</strong> Consultar detalhes de um instrumento</p>
+            <p><strong>5:</strong> Finalizar a sessão atual</p>
+        </div>
+        <input type="number" id="escolha" min="1" max="5" placeholder="Ex: 1 para Cadastrar">
+        
+        <button onclick="executarOpcao()">Confirmar</button>
+        <p id="msgMenu" class="mensagem"></p>
+    </section>
+
+    <!-- Cadastro -->
+    <section id="cadastro">
+        <h3>Cadastro de Instrumento</h3>
+        <input type="text" id="nome" placeholder="Nome do Instrumento">
+        <input type="text" id="marca" placeholder="Marca">
+        <input type="text" id="tipo" placeholder="Tipo (corda, sopro...)">
+        <input type="text" id="cor" placeholder="Cor">
+        <input type="number" id="estoque" placeholder="Quantidade em Estoque">
+        <button onclick="salvarCadastro()">Salvar</button>
+        <button onclick="voltarMenu()">Voltar</button>
+        <p class="mensagem" id="msgCadastro"></p>
+    </section>
+
+    <!-- Adicionar -->
+    <section id="adicionar">
+        <h3>Entrada de Instrumento no Estoque</h3>
+        <input type="text" id="nomeEntrada" placeholder="Nome do Instrumento">
+        <input type="number" id="valorAdd" placeholder="Quantidade a adicionar">
+        <button id="btnAdicionar" onclick="adicionarEstoque()">Adicionar</button>
+        <button onclick="voltarMenu()">Voltar</button>
+        <p class="mensagem" id="msgAdd"></p>
+    </section>
+
+    <!-- Reduzir -->
+    <section id="reduzir">
+        <h3>Saída de Instrumento do Estoque</h3>
+        <input type="text" id="nomeRetirada" placeholder="Nome do Instrumento">
+        <input type="number" id="valorRed" placeholder="Quantidade a retirar">
+        <button id="btnRemover" onclick="removerEstoque()">Remover</button>
+        <button onclick="voltarMenu()">Voltar</button>
+        <p class="mensagem" id="msgRed"></p>
+    </section>
+
+    <!-- Exibir -->
+    <section id="exibir">
+        <h3>Consultar Instrumento</h3>
+        <input type="text" id="pesquisaNome" placeholder="Nome do Instrumento">
+        <button onclick="consultarInstrumento()">Buscar</button>
+        <p class="mensagem" id="msgBusca"></p>
+        <div id="infoUsuario"></div>
+        <button onclick="voltarMenu()">Voltar</button>
+    </section>
+
+    <script type="text/javascript">
+
+        function executarOpcao() {
+            const valor = document.getElementById("escolha").value.trim();
+            const msg = document.getElementById("msgMenu");
+            msg.innerText = "";
+
+            switch (valor) {
+                case "1":
+                    abrir("cadastro");
+                    break;
+                case "2":
+                    abrir("adicionar");
+                    break;
+                case "3":
+                    abrir("reduzir");
+                    break;
+                case "4":
+                    abrir("exibir");
+                    break;
+                case "5":
+                    finalizarSessao();
+                    break;
+                default:
+                    msg.innerText = "Digite o número correspondente a opção desejada. ";  
+            }
+
+            // Limpa seleção para evitar reenvios acidentais
+            document.getElementById("escolha").value = "";
+        }
+
+        function entrar() {
+            const email = document.getElementById("email").value.trim();
+            const senha = document.getElementById("senha").value.trim();
+            const msg = document.getElementById("msgLogin");
+
+            if (!email && !senha) {
+                msg.innerText = "Por favor, preencha o e-mail e a senha.";
+                return;
+            }
+
+            if (!email) {
+                msg.innerText = "O campo de e-mail não foi preenchido.";
+                return;
+            }
+
+            if (!senha) {
+                msg.innerText = "O campo de senha não foi preenchido.";
+                return;
+            }
+
+            if (email === "teste.com.br" && senha === "teste") {
+                document.getElementById("login").style.display = "none";
+                document.getElementById("menu").style.display = "block";
+                msg.innerText = "";
+            } else {
+                msg.innerText = "E-mail ou senha incorretos.";
+            }
+        }
+
+        function finalizarSessao() {
+            sessionStorage.clear();
+            location.replace("index.html");
+        }
+
+        function abrir(secao) {
+            document.querySelectorAll("section").forEach(s => s.style.display = "none");
+            document.getElementById(secao).style.display = "block";
+        }
+
+        function limparCampos(ids) {
+            ids.forEach(id => {
+                const campo = document.getElementById(id);
+                if (campo) campo.value = "";
+            });
+        }
+
+        function voltarMenu() {
+            document.querySelectorAll("section").forEach(s => s.style.display = "none");
+            document.getElementById("menu").style.display = "block";
+
+            // Limpar mensagens das seções
+            document.getElementById("msgCadastro").innerText = "";
+            document.getElementById("msgAdd").innerText = "";
+            document.getElementById("msgRed").innerText = "";
+            document.getElementById("msgBusca").innerText = "";
+            document.getElementById("infoUsuario").innerHTML = "";
+
+            // Limpar campos preenchidos
+            limparCampos([
+                "nome", "marca", "tipo", "cor", "estoque",
+                "nomeEntrada", "valorAdd",
+                "nomeRetirada", "valorRed",
+                "pesquisaNome"
+            ]);
+
+            document.getElementById("btnAdicionar").disabled = false;
+            document.getElementById("btnRemover").disabled = false;
+        }
+
+        function salvarCadastro() {
+            const nome = document.getElementById("nome").value;
+            const marca = document.getElementById("marca").value;
+            const tipo = document.getElementById("tipo").value;
+            const cor = document.getElementById("cor").value;
+            const estoque = parseInt(document.getElementById("estoque").value);
+            const msg = document.getElementById("msgCadastro");
+
+            if (nome && marca && tipo && cor && !isNaN(estoque)) {
+                const novoInstrumento = new InstrumentoMusical(nome, marca, tipo, cor, estoque);
+                let lista = obterInstrumentos();
+                lista.push(novoInstrumento);
+                sessionStorage.setItem("instrumentos", JSON.stringify(lista));
+                msg.innerText = "Instrumento registrado!";
+            } else {
+                msg.innerText = "Preencha todos os campos corretamente.";
+            }
+        }
+
+        function adicionarEstoque() {
+            const btn = document.getElementById("btnAdicionar");
+            if (btn.disabled) return;
+
+            const nomeBusca = document.getElementById("nomeEntrada").value.trim().toLowerCase();
+            const valor = parseInt(document.getElementById("valorAdd").value);
+            const msg = document.getElementById("msgAdd");
+            msg.innerText = "";
+
+            let lista = obterInstrumentos();
+            let instrumentoIndex = lista.findIndex(item => item.nome.toLowerCase() === nomeBusca);
+
+            if (instrumentoIndex === -1) {
+                msg.innerText = "Instrumento não encontrado.";
+                return;
+            }
+
+            if (isNaN(valor) || valor < 0) {
+                msg.innerText = "Quantidade inválida.";
+                return;
+            }
+
+            let instrumento = new InstrumentoMusical(
+                lista[instrumentoIndex].nome,
+                lista[instrumentoIndex].marca,
+                lista[instrumentoIndex].tipo,
+                lista[instrumentoIndex].cor,
+                lista[instrumentoIndex].quantidadeEmEstoque
+            );
+
+            const resultado = instrumento.adicionarEstoque(valor);
+
+            if (resultado.sucesso) {
+                lista[instrumentoIndex].quantidadeEmEstoque = instrumento.quantidadeEmEstoque;
+                sessionStorage.setItem("instrumentos", JSON.stringify(lista));
+                btn.disabled = true; // Desativa permanentemente após uso
+            }
+
+            msg.innerText = resultado.mensagem;
+        }
+
+        function removerEstoque() {
+            const btn = document.getElementById("btnRemover");
+            if (btn.disabled) return;
+
+            const nomeBusca = document.getElementById("nomeRetirada").value.trim().toLowerCase();
+            const valor = parseInt(document.getElementById("valorRed").value);
+            const msg = document.getElementById("msgRed");
+            msg.innerText = "";
+
+            let lista = obterInstrumentos();
+            let instrumentoIndex = lista.findIndex(item => item.nome.toLowerCase() === nomeBusca);
+
+            if (instrumentoIndex === -1) {
+                msg.innerText = "Instrumento não encontrado.";
+                return;
+            }
+
+            if (isNaN(valor) || valor < 0) {
+                msg.innerText = "Quantidade inválida.";
+                return;
+            }
+
+            let instrumento = new InstrumentoMusical(
+                lista[instrumentoIndex].nome,
+                lista[instrumentoIndex].marca,
+                lista[instrumentoIndex].tipo,
+                lista[instrumentoIndex].cor,
+                lista[instrumentoIndex].quantidadeEmEstoque
+            );
+
+            const resultado = instrumento.removerEstoque(valor);
+
+            if (resultado.sucesso) {
+                lista[instrumentoIndex].quantidadeEmEstoque = instrumento.quantidadeEmEstoque;
+                sessionStorage.setItem("instrumentos", JSON.stringify(lista));
+                btn.disabled = true; // Desativa após retirada única
+            }
+
+            msg.innerText = resultado.mensagem;
+        }
+
+        function consultarInstrumento() {
+            const nomeBusca = document.getElementById("pesquisaNome").value.trim().toLowerCase();
+            const msg = document.getElementById("msgBusca");
+            const info = document.getElementById("infoUsuario");
+            info.innerHTML = "";
+            msg.innerText = "";
+
+            let lista = obterInstrumentos();
+            const instrumentoEncontrado = lista.find(item => item.nome.toLowerCase() === nomeBusca);
+
+            if (instrumentoEncontrado) {
+                info.innerHTML = formatarInstrumento(instrumentoEncontrado);
+            } else {
+                msg.innerText = "Instrumento não encontrado.";
+            }
+        }
+
+        // Obtém lista do estoque
+        function obterInstrumentos() {
+            return JSON.parse(sessionStorage.getItem("instrumentos")) || [];
+        }
+
+        function formatarInstrumento(instrumento) {
+            return `
+                <strong>Nome:</strong> ${instrumento.nome}<br>
+                <strong>Marca:</strong> ${instrumento.marca}<br>
+                <strong>Tipo:</strong> ${instrumento.tipo}<br>
+                <strong>Cor:</strong> ${instrumento.cor}<br>
+                <strong>Quantidade em Estoque:</strong> ${instrumento.quantidadeEmEstoque}
+            `;
+        }
+
+        window.onload = () => {
+            abrir("login");
+        };
+
+    </script>
+</body>
+</html>

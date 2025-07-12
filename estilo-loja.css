@@ -1,0 +1,151 @@
+/* Centralizar todo o conteúdo na tela */
+body {
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    font-size: clamp(14px, 2vw, 18px);
+    background-image: url(img/Imagem\ de\ fundo2.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 30px;
+    color: #333;
+}
+
+/* Títulos coloridos */
+h2, h3 {
+    color: #c97d32;
+    text-align: center;
+    font-size: clamp(20px, 5vw, 32px);
+}
+
+/* Caixas de cada seção centralizadas */
+section {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    max-width: 500px;
+    width: 100%;
+    display: none;
+}
+
+/* Campos de entrada */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    font-size: clamp(14px, 2vw, 16px);
+    box-sizing: border-box;
+}
+
+/* Botões uniformes e centralizados */
+button {
+    background-color: #c97d32;
+    color: white;
+    padding: 10px 20px;
+    margin-top: 10px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: clamp(14px, 2vw, 16px);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #aa6223;
+}
+
+/* Mensagens */
+.mensagem {
+    color: #d32424;
+    font-size: clamp(13px, 1.5vw, 15px);
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Área de exibição */
+#infoUsuario {
+    background-color: #fff5e6;
+    padding: 15px;
+    border-radius: 6px;
+    font-size: clamp(14px, 2vw, 16px);
+    line-height: 1.6;
+    border-left: 4px solid #c97d32;
+    text-align: left;
+}
+
+/* Responsividade para telas menores */
+@media screen and (max-width: 600px) {
+    body {
+        padding: 15px;
+    }
+
+    section {
+        padding: 15px;
+        max-width: 100%;
+    }
+
+    button {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+}
+
+#descricaoMenu {
+    background-color: #fffaf5;
+    border: 1px solid #e1c2a2;
+    border-left: 4px solid #c97d32;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+    font-size: clamp(14px, 2vw, 16px);
+    line-height: 1.6;
+    color: #333;
+}
+
+#descricaoMenu p {
+    margin: 6px 0;
+}
+
+/* Label do menu */
+#menu label {
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+    color: #c97d32;
+    font-size: clamp(15px, 2vw, 18px);
+    text-align: center;
+}
+
+/* Estilo para o botão Confirmar do menu */
+#menu button {
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #c97d32;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: clamp(14px, 2vw, 16px);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+#menu button:hover {
+    background-color: #aa6223;
+}
