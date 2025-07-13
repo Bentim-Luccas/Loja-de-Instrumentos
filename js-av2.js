@@ -1,3 +1,4 @@
+
 class InstrumentoMusical {
     constructor(nome, marca, tipo, cor, quantidadeEmEstoque) {
         this.nome = nome;                // Ex: "Guitarra Les Paul"

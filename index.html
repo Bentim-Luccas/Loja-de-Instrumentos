@@ -9,6 +9,12 @@
 </head>
 <body>
 
+    <!-- Mensagem de alerta -->
+     <div id="meu-alerta">
+        <p>Este site foi desenvolvido como um exercício pessoal e tem login fixo.<br><br>E-mail: teste.com.br<br>Senha: teste<br><br>Trata-se de um site para controle de estoque de uma loja de instrumentos musicais.</p>
+        <button onclick="fecharAlerta()">OK</button>
+     </div>
+
     <!-- Login -->
     <section id="login">
         <h2>Acesso ao controle de estoque da loja</h2>
@@ -80,6 +86,14 @@
     </section>
 
     <script type="text/javascript">
+
+        // Exibe a mensagem de alerta ao abrir o site
+        document.getElementById("meu-alerta").style.display = "block";
+
+        // Função para fechar a mensagem de alerta no começo do site
+        function fecharAlerta() {
+            document.getElementById("meu-alerta").style.display = "none";
+        }
 
         function executarOpcao() {
             const valor = document.getElementById("escolha").value.trim();
